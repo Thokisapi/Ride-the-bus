@@ -1,5 +1,5 @@
 body{
-    background-color: #3C3C3C;
+    background-color: #2e2d2d;
 }
 #start-button{
     align-items: center;
@@ -8,7 +8,9 @@ body{
 #status{
     color: #ffffff;
 }
-
+.controls{
+    width: 25%;
+}
 img{
     width: 250px;
     height: 400px;
