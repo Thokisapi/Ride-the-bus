@@ -13,10 +13,10 @@
 <body>
     <div id="game">
         <div id="cards" class="m-5 d-flex justify-content-center">
-            <div id="card-backside" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
-            <div id="card-backside" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
-            <div id="card-backside" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
-            <div id="card-backside" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
+            <div id="card1" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
+            <div id="card2" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
+            <div id="card3" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
+            <div id="card4" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
         </div>
         <div id="status" class="m-5 d-flex justify-content-center">Current game-phase</div>
         <div id="controls" class="flex-column gap-3 justify-content-center" >
@@ -30,13 +30,20 @@
                 <button type="button" id="guessHigher" class="m-1 btn btn-primary">Higher</button>
                 <button type="button" id="guessLower" class="m-1 btn btn-primary">Lower</button>
             </div>
+
             <div id="round-3-phase" class="d-flex justify-content-center">
+                <button type="button" id="guessHigher" class="m-1 btn btn-primary">Inside</button>
+                <button type="button" id="guessLower" class="m-1 btn btn-primary">Outside</button>
+            </div>
+
+            <div id="round-4-phase" class="d-flex justify-content-center">
                 <button type="button" id="guessHearts" class="m-1 btn btn-danger">Hearts</button>
                 <button type="button" id="guessSpades" class="m-1 btn btn-dark">Spades</button>
                 <button type="button" id="guessDiamonds" class="m-1 btn btn-danger">Diamonds</button>
                 <button type="button" id="guessClubs" class="m-1 btn btn-dark">Clubs</button>
             </div>
         </div>
+    </div>
 
 </body>
 <script src="../js/gamescript.js"></script>
