@@ -1,75 +1,87 @@
-const apiCards = 'https://www.deckofcardsapi.com/api/deck';
-    let deckId = '';
-    let currentCard = null;
-    let nextCard = null;
-    let round = 0;
+const apiCards = "https://www.deckofcardsapi.com/api/deck";
+let deckId = "";
+let revealedCards = [];
 
+const data = [];
 
-    const valueMap = {
-      'ACE': 14, 'KING': 13, 'QUEEN': 12, 'JACK': 11,
-      '10': 10, '9': 9, '8': 8, '7': 7, '6': 6, '5': 5, '4': 4, '3': 3, '2': 2
-    };
+const valueMap = {
+  ACE: 14,
+  KING: 13,
+  QUEEN: 12,
+  JACK: 11,
+  10: 10,
+  9: 9,
+  8: 8,
+  7: 7,
+  6: 6,
+  5: 5,
+  4: 4,
+  3: 3,
+  2: 2,
+};
 
-    async function fetchJSON(url) {
-        const resp = await fetch(url);
-        console.log("deck fetched succesfully");
-        
-        if (!resp.ok) throw new Error('API error: ' + resp.status);
-        return await resp.json();
+async function fetchJSON(url) {
+    const resp = await fetch(url);
+    return await resp.json();
+  }
 
-      }
+  async function startGame() {
+    const data = await fetchJSON(`${apiBase}/new/shuffle/?deck_count=1`);
+    deckId = data.deck_id;
+    // make sure no cards are revealed
+    revealedCards = [];
+    document.getElementById("status_label").innerText = "Game started! Guess Red or Black.";
+  }
 
-    function shuffledeck() {
-        
-    }
+  async function revealCard(slotId) {
+    const data = await fetchJSON(`${apiBase}/${deckId}/draw/?count=1`);
+    const card = data.cards[0];
+    revealedCards.push(card);
+    document.querySelector(`#${slotId} img`).src = card.image;
+    return card;
+  }
 
-    function reset(){
-        round = 0;
-        document.getElementById('start-phase').style.display = 'block';
-        document.getElementById('round-1-phase').style.display ='none'
-        document.getElementById('round-2-phase').style.display = 'none'
-        document.getElementById('round-3-phase').style.display = 'none'
-        document.getElementById('round-4-phase').style.display = 'none'
-        
+  async function guessColor(color) {
+    const card = await revealCard("card1");
+    const isRed = (card.suit === "HEARTS" || card.suit === "DIAMONDS");
+    const correct = (color === "red" && isRed) || (color === "black" && !isRed);
+    document.getElementById("status_label").innerText = correct ? "Correct! Higher or Lower?" : alert('wrong');
+  }
 
-    }
+  async function guessHigherLower(choice){
+    const card1 = revealedCards[0];
+    const card2 = revealCards[1];
+    const cardVal1 = valueMap[card1.value];
+    const cardVal2 = valueMap[card2.value];
 
-    async function startgame() {
-        reset();
-        fetchJSON();
-        // get a new deck shuffled
-        const data = await fetchJSON(`${apiCards}/new/shuffledeck/?deck_count1}`)
-        deckId = data.deck_id;
-         drawOne('currentCard').then(() => {
-        document.getElementById('startGame').style.display = 'none';
-        document.getElementById('round-1-phase').style.display = 'block'
-      });
-    }
+    const correct = (choice === "higher" && cardVal2 > cardVal1) || (choice === "lower" && cardVal1 < cardVal1);
+  document.getElementById("status_label").innerText = correct ? "Correct! Inside or Outside?" : window.location.reload;
+  }
 
-    async function drawOne(target) {
-        const data = await fetchJSON(`${apiBase}/${deckId}/draw/?count=1`);
-        if (data.cards.length === 0) {
-          document.getElementById('message').textContent = 'No more cards. Game over!';
-          return;
-        }
-        const card = data.cards[0];
-        document.getElementById(target).src = card.image;
-        if (target === 'currentCard') currentCard = card;
-        else nextCard = card;
-      }
+ async function guessInsideOutside(choice){
+    const card2 = revealedCards[1]
+    const card3 = revealedCards[2]
+    
+    const cardValue2 = valueMap[card2.value];
+    const cardValue3 = valueMap[card3.value];
+    const correct = (choice === 'inside' && cardValue2 )
+ }
 
-      function evaluateGuess(guessType){
-        const valueCurrentCard = valueMap[currentCard.value];
-        const valueNextCard = valueMap[nextCard.value];
+ async function guessSuits() {
+    
+ }
+document.getElementById("start_button").onclick = startGame();
 
-        let correct = false;
-        //check conditions
-        if (guessType === 'higher') correct = valueNextCard>valueCurrentCard
-        else if (guessType === 'lower') correct = valueNextCard<valueCurrentCard
-        else if(guessType === 'same') correct = valueNextCard == valueCurrentCard
-      }
+document.getElementById("guessRed").onclick = () => guessColor("red");
+document.getElementById("guessBlack").onclick = () => guessColor("black");
 
+document.getElementById("guessHigher").onclick = () => guessHigherLower("higher");
+document.getElementById("guessLower").onclick = () => guessHigherLower("lower");
 
-   
-        
- 
+document.getElementById("guessInside").onclick = () => guessInsideOutside("inside");
+document.getElementById("guessOutside").onclick = () => guessInsideOutside("outside");
+
+document.getElementById("guessHearts").onclick = () => guessSuit("hearts");
+document.getElementById("guessSpades").onclick = () => guessSuit("spades");
+document.getElementById("guessDiamonds").onclick = () => guessSuit("diamonds");
+document.getElementById("guessClubs").onclick = () => guessSuit("clubs");

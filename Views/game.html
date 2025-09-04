@@ -18,9 +18,13 @@
             <div id="card3" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
             <div id="card4" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
         </div>
-        <div id="status" class="m-5 d-flex justify-content-center">Current game-phase</div>
-        <div id="controls" class="flex-column gap-3 justify-content-center" >
-            <div id="start-phase" class="d-flex justify-content-center"><button type="button" class="btn btn-primary">Start</button></div>
+
+        <div id="status" class="m-2 d-flex justify-content-center"></div>
+        <label id="status_label" class="m-5 d-flex justify-content-center">placeholder text</label>
+
+        <div id="controls" class="flex-column gap-3 justify-content-center">
+            <div id="start-phase" class="d-flex justify-content-center"><button id="start_button" type="button"
+                    class="btn btn-primary">Start</button></div>
 
             <div id="round-1-phase" class="d-flex justify-content-center">
                 <button type="button" id="guessRed" class=" m-1 btn btn-danger">Red</button>
@@ -32,8 +36,8 @@
             </div>
 
             <div id="round-3-phase" class="d-flex justify-content-center">
-                <button type="button" id="guessHigher" class="m-1 btn btn-primary">Inside</button>
-                <button type="button" id="guessLower" class="m-1 btn btn-primary">Outside</button>
+                <button type="button" id="guessInside" class="m-1 btn btn-primary">Inside</button>
+                <button type="button" id="guessOutside" class="m-1 btn btn-primary">Outside</button>
             </div>
 
             <div id="round-4-phase" class="d-flex justify-content-center">
