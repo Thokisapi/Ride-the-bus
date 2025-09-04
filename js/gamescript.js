@@ -69,33 +69,38 @@ async function guessHigherLower(choice) {
 }
 
 async function guessInsideOutside(choice) {
+  const card1 = revealedCards[0];
   const card2 = revealedCards[1];
   const card3 = await revealCard('card3');
 
-
- 
+  const cardValue1 = valueMap[card1.value]
   const cardValue2 = valueMap[card2.value];
   const cardValue3 = valueMap[card3.value];
-  console.log(cardValue3);
 
-  const minVal = Math.min(cardValue2);
-  const maxVal = Math.max(cardValue3);
+  const minVal = Math.min(cardValue1);
+  const maxVal = Math.max(cardValue2);
 
   const inside = cardValue3 > minVal && cardValue3 < maxVal;
  
-   const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
+  const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
 
   document.getElementById("status_label").innerText = correct ? "Correct! Guess the Suit!" : "Wrong!";
 }
 
 
-async function guessSuits() {
+async function guessSuits(choice) {
   const card = await revealCard('card4')
-  const cardValue = valueMap[card.suit.toUpperCase()]
-  console.log(cardValue);
-  console.log(card);
+
   
+  const isHearts = card.suit === "HEARTS";
+  const isDiamonds = card.suit === "DIAMONDS";
+  const isSpades = card.suit === "SPADES";
+  const isClubs = card.suit === "CLUBS";
+
+  console.log(choice);
   
+  const correct = (choice === 'hearts' && isHearts) || (choice === 'diamonds' && isDiamonds) || (choice === 'spades' && isSpades) || (choice === 'clubs' && isClubs)
+  document.getElementById("status_label").innerText = correct ? "Correct! You won" : "You lost!";
 }
 
 
