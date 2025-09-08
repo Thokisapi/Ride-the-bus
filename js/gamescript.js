@@ -1,8 +1,8 @@
 const apiCards = "https://www.deckofcardsapi.com/api/deck";
 let deckId = "";
 let revealedCards = [];
-
 const data = [];
+const coins = 0;
 
 const valueMap = {
   ACE: 14,
@@ -32,7 +32,8 @@ async function startGame() {
   const data = await fetchJSON(`${apiCards}/new/shuffle/?deck_count=1`);
   deckId = data.deck_id;
   // make sure no cards are revealed
-  revealedCards = [];
+  revealedCards = []; 
+   
 }
 
 async function revealCard(slotId) {
@@ -71,13 +72,13 @@ async function guessInsideOutside(choice) {
   const cardValue2 = valueMap[card2.value];
   const cardValue3 = valueMap[card3.value];
 
-  const minVal = Math.min(cardValue1);
-  const maxVal = Math.max(cardValue2);
-
+  const minVal = Math.min(cardValue1, cardValue2);
+  const maxVal = Math.max(cardValue1, cardValue2);
+    
   const inside = cardValue3 > minVal && cardValue3 < maxVal;
   
-   console.log(inside);
- 
+  console.log(inside);
+  
   const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
 
   document.getElementById("status_label").innerText = correct ? "Correct! Guess the Suit!" : "Wrong!";
