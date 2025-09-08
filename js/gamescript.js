@@ -48,10 +48,6 @@ async function guessColor(color) {
   const isRed = card.suit === "HEARTS" || card.suit === "DIAMONDS";
   const correct = (color === "red" && isRed) || (color === "black" && !isRed);
   document.getElementById("status_label").innerText = correct ? "Correct! Higher or Lower?" : "wrong";
-    if (!correct){
-      window.location.reload;
-    }
-    
 }
 
 async function guessHigherLower(choice) {
@@ -63,8 +59,6 @@ async function guessHigherLower(choice) {
 
   const correct = (choice === "higher" && cardVal2 > cardVal1) ||  (choice === "lower" && cardVal2 < cardVal1);
   document.getElementById("status_label").innerText = correct ? "Correct! Inside or Outside?": "Wrong";
-    
-
     
 }
 
@@ -81,6 +75,8 @@ async function guessInsideOutside(choice) {
   const maxVal = Math.max(cardValue2);
 
   const inside = cardValue3 > minVal && cardValue3 < maxVal;
+  
+   console.log(inside);
  
   const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
 
@@ -88,9 +84,9 @@ async function guessInsideOutside(choice) {
 }
 
 
+
 async function guessSuits(choice) {
   const card = await revealCard('card4')
-
   
   const isHearts = card.suit === "HEARTS";
   const isDiamonds = card.suit === "DIAMONDS";
@@ -103,6 +99,9 @@ async function guessSuits(choice) {
   document.getElementById("status_label").innerText = correct ? "Correct! You won" : "You lost!";
 }
 
+function reset() {
+  
+}
 
 document.getElementById("start_button").onclick = startGame();
 
@@ -112,11 +111,10 @@ document.getElementById("guessBlack").onclick = () => guessColor("black");
 document.getElementById("guessHigher").onclick = () => guessHigherLower("higher");
 document.getElementById("guessLower").onclick = () => guessHigherLower("lower");
 
-document.getElementById("guessInside").onclick = () =>
-  guessInsideOutside("inside");
-document.getElementById("guessOutside").onclick = () =>
-  guessInsideOutside("outside");
-
+document.getElementById("guessInside").onclick = () => guessInsideOutside("inside");
+ 
+document.getElementById("guessOutside").onclick = () => guessInsideOutside("outside");
+  
 document.getElementById("guessHearts").onclick = () => guessSuits("hearts");
 document.getElementById("guessSpades").onclick = () => guessSuits("spades");
 document.getElementById("guessDiamonds").onclick = () => guessSuits("diamonds");
