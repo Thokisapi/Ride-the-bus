@@ -31,9 +31,8 @@ async function startGame() {
     "Game started! Guess Red or Black.";
   const data = await fetchJSON(`${apiCards}/new/shuffle/?deck_count=1`);
   deckId = data.deck_id;
-  // make sure no cards are revealed
+  showPhase(1);
   revealedCards = []; 
-   
 }
 
 async function revealCard(slotId) {
@@ -48,7 +47,17 @@ async function guessColor(color) {
   const card = await revealCard("card1");
   const isRed = card.suit === "HEARTS" || card.suit === "DIAMONDS";
   const correct = (color === "red" && isRed) || (color === "black" && !isRed);
-  document.getElementById("status_label").innerText = correct ? "Correct! Higher or Lower?" : "wrong";
+
+  if (correct) {
+    document.getElementById("status_label").innerText = "Correct! Higher or Lower?";
+    showPhase(2);
+  } else {
+    document.getElementById("status_label").innerText = "Wrong! Game over.";
+    showPhase(0);
+        alert('Wrong choice you lost!')
+    reset();
+  }
+
 }
 
 async function guessHigherLower(choice) {
@@ -59,7 +68,16 @@ async function guessHigherLower(choice) {
   const cardVal2 = valueMap[card2.value];
 
   const correct = (choice === "higher" && cardVal2 > cardVal1) ||  (choice === "lower" && cardVal2 < cardVal1);
-  document.getElementById("status_label").innerText = correct ? "Correct! Inside or Outside?": "Wrong";
+
+  if (correct) {
+    document.getElementById("status_label").innerText = "Correct! Inside or Outside?";
+    showPhase(3);
+  } else {
+    document.getElementById("status_label").innerText = "Wrong! Game over.";
+    showPhase(0);
+        alert('Wrong choice you lost!')
+       reset();
+  }
     
 }
 
@@ -81,7 +99,15 @@ async function guessInsideOutside(choice) {
   
   const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
 
-  document.getElementById("status_label").innerText = correct ? "Correct! Guess the Suit!" : "Wrong!";
+   if (correct) {
+    document.getElementById("status_label").innerText = "Correct! Guess the Suit!";
+    showPhase(4);
+  } else {
+    document.getElementById("status_label").innerText = "Wrong! Game over.";
+    alert('Wrong choice you lost!')
+    showPhase(0);
+       reset();
+  }
 }
 
 
@@ -97,14 +123,53 @@ async function guessSuits(choice) {
   console.log(choice);
   
   const correct = (choice === 'hearts' && isHearts) || (choice === 'diamonds' && isDiamonds) || (choice === 'spades' && isSpades) || (choice === 'clubs' && isClubs)
-  document.getElementById("status_label").innerText = correct ? "Correct! You won" : "You lost!";
+if (correct) {
+    document.getElementById("status_label").innerText = "Correct! Guess the Suit!";
+    showPhase(0);
+    reset();
+  } else {
+    document.getElementById("status_label").innerText = "Wrong! Game over.";
+    showPhase(0);
+    alert('Wrong choice you lost!')
+    reset()
+  }
 }
 
-function reset() {
+function showPhase(phase) {
+
+   ["start-phase","round-1-phase", "round-2-phase", "round-3-phase", "round-4-phase"].forEach(id => {
+    document.getElementById(id).classList.add("d-none");
+  });
+
+  if (phase > 0) {
+    document.getElementById(`round-${phase}-phase`).classList.remove("d-none");
+  }
+   currentPhase = phase;
+  console.log(phase);
+
+  document.querySelectorAll("#start-phase, #round-1-phase, #round-2-phase, #round-3-phase, #round-4-phase")
+      .forEach(div => div.style.display = "none");
+  if (phase === 0) document.getElementById("start-phase").style.display = "flex";
+  if (phase === 1) document.getElementById("round-1-phase").style.display = "flex";
+  if (phase === 2) document.getElementById("round-2-phase").style.display = "flex";
+  if (phase === 3) document.getElementById("round-3-phase").style.display = "flex";
+  if (phase === 4) document.getElementById("round-4-phase").style.display = "flex";
   
 }
 
-document.getElementById("start_button").onclick = startGame();
+function reset() {
+  revealedCards = []; 
+  
+    document.querySelector(`#card1 img`).src = "../images/backside.png";
+    document.querySelector(`#card2 img`).src = "../images/backside.png";
+    document.querySelector(`#card3 img`).src = "../images/backside.png";
+    document.querySelector(`#card4 img`).src = "../images/backside.png";
+    
+  document.getElementById("status_label").innerText = "Click start to play!";
+  showPhase(0);
+}
+
+document.getElementById("start_button").onclick = startGame;
 
 document.getElementById("guessRed").onclick = () => guessColor("red");
 document.getElementById("guessBlack").onclick = () => guessColor("black");

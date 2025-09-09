@@ -12,6 +12,7 @@
 
 <body>
     <div id="game">
+        <h1 class="m-5 d-flex justify-content-center">Ride the bus</h1>
         <div id="cards" class="m-5 d-flex justify-content-center">
             <div id="card1" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
             <div id="card2" class="m-3"><img src="../images/backside.png" alt="backside image"></div>
@@ -20,27 +21,27 @@
         </div>
 
         <div id="status" class="m-2 d-flex justify-content-center"></div>
-        <label id="status_label" class="m-5 d-flex justify-content-center">placeholder text</label>
+        <label id="status_label" class="m-3 d-flex justify-content-center">Click start to play!</label>
 
         <div id="controls" class="flex-column gap-3 justify-content-center">
             <div id="start-phase" class="d-flex justify-content-center"><button id="start_button" type="button"
                     class="btn btn-primary">Start</button></div>
 
-            <div id="round-1-phase" class="d-flex justify-content-center">
+            <div id="round-1-phase" class="m-3 d-none justify-content-center">
                 <button type="button" id="guessRed" class=" m-1 btn btn-danger">Red</button>
                 <button type="button" id="guessBlack" class=" m-1 btn btn-dark">Black</button>
             </div>
-            <div id="round-2-phase" class="d-flex justify-content-center">
+            <div id="round-2-phase" class="m-3 d-none justify-content-center">
                 <button type="button" id="guessHigher" class="m-1 btn btn-primary">Higher</button>
                 <button type="button" id="guessLower" class="m-1 btn btn-primary">Lower</button>
             </div>
 
-            <div id="round-3-phase" class="d-flex justify-content-center">
+            <div id="round-3-phase" class="m-3 d-none justify-content-center">
                 <button type="button" id="guessInside" class="m-1 btn btn-primary">Inside</button>
                 <button type="button" id="guessOutside" class="m-1 btn btn-primary">Outside</button>
             </div>
 
-            <div id="round-4-phase" class="d-flex justify-content-center">
+            <div id="round-4-phase" class="m-3 d-none justify-content-center">
                 <button type="button" id="guessHearts" class="m-1 btn btn-danger">Hearts</button>
                 <button type="button" id="guessSpades" class="m-1 btn btn-dark">Spades</button>
                 <button type="button" id="guessDiamonds" class="m-1 btn btn-danger">Diamonds</button>
@@ -51,7 +52,7 @@
 
 </body>
 <script src="../js/gamescript.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
 
 
 
