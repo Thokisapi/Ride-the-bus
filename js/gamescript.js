@@ -32,7 +32,7 @@ async function startGame() {
   const data = await fetchJSON(`${apiCards}/new/shuffle/?deck_count=1`);
   deckId = data.deck_id;
   showPhase(1);
-  revealedCards = []; 
+  revealedCards = [];
 }
 
 async function revealCard(slotId) {
@@ -49,15 +49,16 @@ async function guessColor(color) {
   const correct = (color === "red" && isRed) || (color === "black" && !isRed);
 
   if (correct) {
-    document.getElementById("status_label").innerText = "Correct! Higher or Lower?";
+    document.getElementById("status_label").innerText =
+      "Correct! Higher or Lower?";
     showPhase(2);
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
-        alert('Wrong choice you lost!')
+    await revealCard("card1");
+    alert("Wrong choice you lost!");
     reset();
   }
-
 }
 
 async function guessHigherLower(choice) {
@@ -67,104 +68,121 @@ async function guessHigherLower(choice) {
   const cardVal1 = valueMap[card1.value];
   const cardVal2 = valueMap[card2.value];
 
-  const correct = (choice === "higher" && cardVal2 > cardVal1) ||  (choice === "lower" && cardVal2 < cardVal1);
+  const correct =
+    (choice === "higher" && cardVal2 > cardVal1) ||
+    (choice === "lower" && cardVal2 < cardVal1) ||
+    (choice === "same" && cardVal1 == cardVal2);
+
+  console.log(choice);
 
   if (correct) {
-    document.getElementById("status_label").innerText = "Correct! Inside or Outside?";
+    document.getElementById("status_label").innerText =
+      "Correct! Inside or Outside?";
     showPhase(3);
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
-        alert('Wrong choice you lost!')
-       reset();
+    await revealCard("card2");
+    alert("Wrong choice you lost!");
+    reset();
   }
-    
 }
 
 async function guessInsideOutside(choice) {
   const card1 = revealedCards[0];
   const card2 = revealedCards[1];
-  const card3 = await revealCard('card3');
+  const card3 = await revealCard("card3");
 
-  const cardValue1 = valueMap[card1.value]
+  const cardValue1 = valueMap[card1.value];
   const cardValue2 = valueMap[card2.value];
   const cardValue3 = valueMap[card3.value];
 
   const minVal = Math.min(cardValue1, cardValue2);
   const maxVal = Math.max(cardValue1, cardValue2);
-    
-  const inside = cardValue3 > minVal && cardValue3 < maxVal;
-  
-  console.log(inside);
-  
-  const correct = (choice === "inside" && inside) || (choice === "outside" && !inside);
 
-   if (correct) {
-    document.getElementById("status_label").innerText = "Correct! Guess the Suit!";
+  const inside = cardValue3 > minVal && cardValue3 < maxVal;
+
+  console.log(inside);
+
+  const correct =
+    (choice === "inside" && inside) || (choice === "outside" && !inside);
+
+  if (correct) {
+    document.getElementById("status_label").innerText =
+      "Correct! Guess the Suit!";
     showPhase(4);
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
-    alert('Wrong choice you lost!')
+      await revealCard("card3")
+    alert("Wrong choice you lost!");
     showPhase(0);
-       reset();
+    reset();
   }
 }
 
-
-
 async function guessSuits(choice) {
-  const card = await revealCard('card4')
-  
+  const card = await revealCard("card4");
+
   const isHearts = card.suit === "HEARTS";
   const isDiamonds = card.suit === "DIAMONDS";
   const isSpades = card.suit === "SPADES";
   const isClubs = card.suit === "CLUBS";
 
   console.log(choice);
-  
-  const correct = (choice === 'hearts' && isHearts) || (choice === 'diamonds' && isDiamonds) || (choice === 'spades' && isSpades) || (choice === 'clubs' && isClubs)
-if (correct) {
-    document.getElementById("status_label").innerText = "Correct! Guess the Suit!";
-    showPhase(0);
-    reset();
+
+  const correct =
+    (choice === "hearts" && isHearts) ||
+    (choice === "diamonds" && isDiamonds) ||
+    (choice === "spades" && isSpades) ||
+    (choice === "clubs" && isClubs);
+  if (correct) {
+    document.getElementById("status_label").innerText =
+      "Correct! Guess the Suit!";
+    await revealCard("card4");
+    alert("Correct you won the game!")
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
-    alert('Wrong choice you lost!')
-    reset()
+    await revealCard("card4");
+    alert("Wrong choice you lost!");
+    reset();
   }
 }
 
 function showPhase(phase) {
+  ["start-phase", "round-1-phase","round-2-phase","round-3-phase","round-4-phase",  ].forEach((id) => {document.getElementById(id).classList.add("d-none")});
 
-   ["start-phase","round-1-phase", "round-2-phase", "round-3-phase", "round-4-phase"].forEach(id => {
-    document.getElementById(id).classList.add("d-none");
-  });
-
-  if (phase > 0) {
+  if (phase === 0) {
+    document.getElementById("start-phase").classList.remove("d-none");
+  } else {
     document.getElementById(`round-${phase}-phase`).classList.remove("d-none");
   }
-   currentPhase = phase;
-  console.log(phase);
-
-  document.querySelectorAll("#start-phase, #round-1-phase, #round-2-phase, #round-3-phase, #round-4-phase")
-      .forEach(div => div.style.display = "none");
-  if (phase === 0) document.getElementById("start-phase").style.display = "flex";
-  if (phase === 1) document.getElementById("round-1-phase").style.display = "flex";
-  if (phase === 2) document.getElementById("round-2-phase").style.display = "flex";
-  if (phase === 3) document.getElementById("round-3-phase").style.display = "flex";
-  if (phase === 4) document.getElementById("round-4-phase").style.display = "flex";
   
+  currentPhase = phase;
+
+  document.querySelectorAll( "#start-phase, #round-1-phase, #round-2-phase, #round-3-phase, #round-4-phase")
+
+    .forEach((div) => (div.style.display = "none"));
+  if (phase === 0)
+    document.getElementById("start-phase").style.display = "flex";
+  if (phase === 1)
+    document.getElementById("round-1-phase").style.display = "flex";
+  if (phase === 2)
+    document.getElementById("round-2-phase").style.display = "flex";
+  if (phase === 3)
+    document.getElementById("round-3-phase").style.display = "flex";
+  if (phase === 4)
+    document.getElementById("round-4-phase").style.display = "flex";
 }
 
 function reset() {
-  revealedCards = []; 
-  
-    document.querySelector(`#card1 img`).src = "../images/backside.png";
-    document.querySelector(`#card2 img`).src = "../images/backside.png";
-    document.querySelector(`#card3 img`).src = "../images/backside.png";
-    document.querySelector(`#card4 img`).src = "../images/backside.png";
-    
+  revealedCards = [];
+
+  document.querySelector(`#card1 img`).src = "../images/backside.png";
+  document.querySelector(`#card2 img`).src = "../images/backside.png";
+  document.querySelector(`#card3 img`).src = "../images/backside.png";
+  document.querySelector(`#card4 img`).src = "../images/backside.png";
+
   document.getElementById("status_label").innerText = "Click start to play!";
   showPhase(0);
 }
@@ -174,13 +192,17 @@ document.getElementById("start_button").onclick = startGame;
 document.getElementById("guessRed").onclick = () => guessColor("red");
 document.getElementById("guessBlack").onclick = () => guessColor("black");
 
-document.getElementById("guessHigher").onclick = () => guessHigherLower("higher");
+document.getElementById("guessHigher").onclick = () =>
+  guessHigherLower("higher");
 document.getElementById("guessLower").onclick = () => guessHigherLower("lower");
+document.getElementById("guessSame").onclick = () => guessHigherLower("same");
 
-document.getElementById("guessInside").onclick = () => guessInsideOutside("inside");
- 
-document.getElementById("guessOutside").onclick = () => guessInsideOutside("outside");
-  
+document.getElementById("guessInside").onclick = () =>
+  guessInsideOutside("inside");
+
+document.getElementById("guessOutside").onclick = () =>
+  guessInsideOutside("outside");
+
 document.getElementById("guessHearts").onclick = () => guessSuits("hearts");
 document.getElementById("guessSpades").onclick = () => guessSuits("spades");
 document.getElementById("guessDiamonds").onclick = () => guessSuits("diamonds");
