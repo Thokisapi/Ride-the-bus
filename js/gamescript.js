@@ -2,7 +2,7 @@ const apiCards = "https://www.deckofcardsapi.com/api/deck";
 let deckId = "";
 let revealedCards = [];
 const data = [];
-const coins = 0;
+var coins = 0;
 
 const valueMap = {
   ACE: 14,
@@ -47,7 +47,7 @@ async function guessColor(color) {
   const card = await revealCard("card1");
   const isRed = card.suit === "HEARTS" || card.suit === "DIAMONDS";
   const correct = (color === "red" && isRed) || (color === "black" && !isRed);
-
+  
   if (correct) {
     document.getElementById("status_label").innerText =
       "Correct! Higher or Lower?";
@@ -72,8 +72,6 @@ async function guessHigherLower(choice) {
     (choice === "higher" && cardVal2 > cardVal1) ||
     (choice === "lower" && cardVal2 < cardVal1) ||
     (choice === "same" && cardVal1 == cardVal2);
-
-  console.log(choice);
 
   if (correct) {
     document.getElementById("status_label").innerText =
@@ -102,8 +100,6 @@ async function guessInsideOutside(choice) {
 
   const inside = cardValue3 > minVal && cardValue3 < maxVal;
 
-  console.log(inside);
-
   const correct =
     (choice === "inside" && inside) || (choice === "outside" && !inside);
 
@@ -117,6 +113,7 @@ async function guessInsideOutside(choice) {
     alert("Wrong choice you lost!");
     showPhase(0);
     reset();
+
   }
 }
 
@@ -128,8 +125,6 @@ async function guessSuits(choice) {
   const isSpades = card.suit === "SPADES";
   const isClubs = card.suit === "CLUBS";
 
-  console.log(choice);
-
   const correct =
     (choice === "hearts" && isHearts) ||
     (choice === "diamonds" && isDiamonds) ||
@@ -140,15 +135,16 @@ async function guessSuits(choice) {
       "Correct! Guess the Suit!";
     await revealCard("card4");
     alert("Correct you won the game!")
+    reset();
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
     await revealCard("card4");
     alert("Wrong choice you lost!");
     reset();
+
   }
 }
-
 function showPhase(phase) {
   ["start-phase", "round-1-phase","round-2-phase","round-3-phase","round-4-phase",  ].forEach((id) => {document.getElementById(id).classList.add("d-none")});
 
@@ -187,6 +183,20 @@ function reset() {
   showPhase(0);
 }
 
+function openModal() {
+  const modal = document.getElementById('modal-gameRules')
+  modal.style.display = "flex";
+  console.log('modal clicked');
+  
+}
+function closeModal() {
+const modal = document.getElementById('modal-gameRules')
+  modal.style.display = "none";
+  console.log('modal closed');
+  
+}
+
+
 document.getElementById("start_button").onclick = startGame;
 
 document.getElementById("guessRed").onclick = () => guessColor("red");
@@ -207,3 +217,7 @@ document.getElementById("guessHearts").onclick = () => guessSuits("hearts");
 document.getElementById("guessSpades").onclick = () => guessSuits("spades");
 document.getElementById("guessDiamonds").onclick = () => guessSuits("diamonds");
 document.getElementById("guessClubs").onclick = () => guessSuits("clubs");
+
+document.getElementById("rules_button").onclick = () => openModal();
+document.getElementById("close-button").onclick = () => closeModal();
+
