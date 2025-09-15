@@ -26,7 +26,6 @@ async function fetchJSON(url) {
 }
 
 async function startGame() {
-  console.log("Game Started");
   document.getElementById("status_label").innerText =
     "Game started! Guess Red or Black.";
   const data = await fetchJSON(`${apiCards}/new/shuffle/?deck_count=1`);
@@ -56,6 +55,7 @@ async function guessColor(color) {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
     await revealCard("card1");
+    console.log(card);
     alert("Wrong choice you lost!");
     reset();
   }
@@ -81,8 +81,11 @@ async function guessHigherLower(choice) {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
     await revealCard("card2");
+    console.log(card2);
     alert("Wrong choice you lost!");
     reset();
+
+    
   }
 }
 
@@ -109,7 +112,7 @@ async function guessInsideOutside(choice) {
     showPhase(4);
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
-      await revealCard("card3")
+    await revealCard("card3")
     alert("Wrong choice you lost!");
     showPhase(0);
     reset();
@@ -140,6 +143,7 @@ async function guessSuits(choice) {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
     showPhase(0);
     await revealCard("card4");
+    console.log(card);
     alert("Wrong choice you lost!");
     reset();
 
