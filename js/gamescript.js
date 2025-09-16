@@ -190,14 +190,10 @@ function reset() {
 function openModal() {
   const modal = document.getElementById('modal-gameRules')
   modal.style.display = "flex";
-  console.log('modal clicked');
-  
 }
 function closeModal() {
-const modal = document.getElementById('modal-gameRules')
+  const modal = document.getElementById('modal-gameRules')
   modal.style.display = "none";
-  console.log('modal closed');
-  
 }
 
 
