@@ -39,6 +39,8 @@ async function revealCard(slotId) {
   const card = data.cards[0];
   revealedCards.push(card);
   document.querySelector(`#${slotId} img`).src = card.image;
+  console.log(slotId);
+  
   return card;
 }
 
@@ -101,7 +103,7 @@ async function guessInsideOutside(choice) {
   const minVal = Math.min(cardValue1, cardValue2);
   const maxVal = Math.max(cardValue1, cardValue2);
 
-  const inside = cardValue3 > minVal && cardValue3 < maxVal;
+  const inside = cardValue3 >= minVal && cardValue3 <= maxVal;
 
   const correct =
     (choice === "inside" && inside) || (choice === "outside" && !inside);
@@ -149,6 +151,7 @@ async function guessSuits(choice) {
 
   }
 }
+
 function showPhase(phase) {
   ["start-phase", "round-1-phase","round-2-phase","round-3-phase","round-4-phase",  ].forEach((id) => {document.getElementById(id).classList.add("d-none")});
 
@@ -157,12 +160,9 @@ function showPhase(phase) {
   } else {
     document.getElementById(`round-${phase}-phase`).classList.remove("d-none");
   }
-  
   currentPhase = phase;
 
-  document.querySelectorAll( "#start-phase, #round-1-phase, #round-2-phase, #round-3-phase, #round-4-phase")
-
-    .forEach((div) => (div.style.display = "none"));
+  document.querySelectorAll( "#start-phase, #round-1-phase, #round-2-phase, #round-3-phase, #round-4-phase").forEach((div) => (div.style.display = "none"));
   if (phase === 0)
     document.getElementById("start-phase").style.display = "flex";
   if (phase === 1)
@@ -207,11 +207,11 @@ document.getElementById("guessHigher").onclick = () =>
 document.getElementById("guessLower").onclick = () => guessHigherLower("lower");
 document.getElementById("guessSame").onclick = () => guessHigherLower("same");
 
-document.getElementById("guessInside").onclick = () =>
-  guessInsideOutside("inside");
+document.getElementById("guessInside").onclick = () => guessInsideOutside("inside");
 
-document.getElementById("guessOutside").onclick = () =>
-  guessInsideOutside("outside");
+
+document.getElementById("guessOutside").onclick = () => guessInsideOutside("outside");
+
 
 document.getElementById("guessHearts").onclick = () => guessSuits("hearts");
 document.getElementById("guessSpades").onclick = () => guessSuits("spades");
