@@ -3,6 +3,7 @@ let deckId = "";
 let revealedCards = [];
 const data = [];
 var coins = 0;
+let won = false;
 
 const valueMap = {
   ACE: 14,
@@ -139,6 +140,9 @@ async function guessSuits(choice) {
     document.getElementById("status_label").innerText =
       "Correct! Guess the Suit!";
     await revealCard("card4");
+    won = true
+    console.log(won);
+    
     alert("Correct, you won the game!")
     reset();
   } else {
