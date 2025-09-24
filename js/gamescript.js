@@ -139,7 +139,7 @@ async function guessSuits(choice) {
     document.getElementById("status_label").innerText =
       "Correct! Guess the Suit!";
     await revealCard("card4");
-    alert("Correct you won the game!")
+    alert("Correct, you won the game!")
     reset();
   } else {
     document.getElementById("status_label").innerText = "Wrong! Game over.";
